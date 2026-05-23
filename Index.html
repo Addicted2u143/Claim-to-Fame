@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claim to Fame S2 — Nicole's Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0e0c; --card: #211f1b; --border: #3a3630;
+    --accent: #c8a84b; --green: #5cb85c; --red: #e05c3a;
+    --muted: #6b6560; --text: #e8e0d0; --text-dim: #a09888;
+    --eliminated-bg: #1a1210; --eliminated-border: #4a2020;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Courier Prime', monospace; min-height: 100vh; padding: 20px;
+    background-image: radial-gradient(ellipse at 20% 20%, rgba(200,168,75,0.04) 0%, transparent 50%),
+                      radial-gradient(ellipse at 80% 80%, rgba(224,92,58,0.04) 0%, transparent 50%);
+  }
+  header { text-align: center; padding: 30px 20px 20px; border-bottom: 1px solid var(--border); margin-bottom: 30px; }
+  header::before { content: '🕵️'; font-size: 2rem; display: block; margin-bottom: 8px; }
+  h1 { font-family: 'Special Elite', cursive; font-size: clamp(1.4rem,4vw,2.2rem); color: var(--accent); letter-spacing: 2px; text-transform: uppercase; }
+  .subtitle { color: var(--muted); font-size: 0.8rem; margin-top: 6px; letter-spacing: 1px; }
+
+  .stats-bar { display: flex; gap: 20px; flex-wrap: wrap; padding: 14px 20px; background: var(--card); border: 1px solid var(--border); border-radius: 4px; margin-bottom: 16px; }
+  .stat { display: flex; flex-direction: column; gap: 2px; }
+  .stat-value { font-family: 'Special Elite', cursive; font-size: 1.3rem; color: var(--accent); }
+  .stat-label { color: var(--muted); font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase; }
+  .divider { width: 1px; background: var(--border); align-self: stretch; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 12px; padding: 12px 16px; background: var(--card); border: 1px solid var(--border); border-radius: 4px; font-size: 0.75rem; color: var(--text-dim); }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .dot-active { background: var(--accent); } .dot-elim { background: var(--red); } .dot-confirmed { background: var(--green); }
+
+  .ttl-key { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-bottom: 20px; padding: 10px 16px; background: var(--card); border: 1px solid var(--border); border-radius: 4px; font-size: 0.72rem; color: var(--text-dim); }
+  .ttl-key span { display: flex; align-items: center; gap: 6px; }
+  .key-swatch { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
+  .key-truth { background: rgba(92,184,92,0.35); border: 1px solid var(--green); }
+  .key-lie   { background: rgba(224,92,58,0.35); border: 1px solid var(--red); }
+  .key-unknown { background: rgba(200,168,75,0.12); border: 1px solid rgba(200,168,75,0.3); }
+
+  .tabs { display: flex; gap: 4px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tab-btn { font-family: 'Special Elite', cursive; font-size: 0.8rem; letter-spacing: 1px; padding: 8px 16px; background: var(--card); border: 1px solid var(--border); color: var(--text-dim); cursor: pointer; transition: all 0.2s; border-radius: 2px; }
+  .tab-btn.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .tab-btn:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
+  .tab-panel { display: none; } .tab-panel.active { display: block; }
+
+  .player-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .player-card { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 16px; position: relative; overflow: hidden; }
+  .player-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); }
+  .player-card.eliminated { background: var(--eliminated-bg); border-color: var(--eliminated-border); opacity: 0.75; }
+  .player-card.eliminated::before { background: var(--red); }
+  .player-card.confirmed { border-color: #2d4a2d; }
+  .player-card.confirmed::before { background: var(--green); }
+
+  .player-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 8px; }
+  .player-name { font-family: 'Special Elite', cursive; font-size: 1.15rem; color: var(--accent); letter-spacing: 1px; }
+  .player-card.eliminated .player-name { color: var(--red); }
+  .player-card.confirmed .player-name { color: var(--green); }
+
+  .status-badge { font-size: 0.65rem; padding: 2px 8px; border-radius: 2px; font-family: 'Courier Prime', monospace; letter-spacing: 1px; white-space: nowrap; flex-shrink: 0; }
+  .badge-active     { background: rgba(200,168,75,0.15); color: var(--accent);  border: 1px solid rgba(200,168,75,0.3); }
+  .badge-eliminated { background: rgba(224,92,58,0.15);  color: var(--red);     border: 1px solid rgba(224,92,58,0.3); }
+
+  .section-label { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin: 10px 0 5px; border-bottom: 1px solid var(--border); padding-bottom: 3px; }
+
+  .two-truths-lie { border-radius: 3px; padding: 8px 10px; margin: 6px 0; border: 1px solid rgba(200,168,75,0.15); background: rgba(200,168,75,0.04); }
+  .ttl-row { display: flex; gap: 6px; align-items: flex-start; font-size: 0.78rem; line-height: 1.5; padding: 3px 6px; border-radius: 2px; margin: 2px 0; }
+  .ttl-row .label { font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); width: 60px; flex-shrink: 0; padding-top: 1px; }
+  .ttl-row .value { color: var(--text-dim); }
+  .ttl-row.truth { background: rgba(92,184,92,0.12); border-left: 2px solid var(--green); }
+  .ttl-row.truth .value { color: var(--green); font-weight: bold; }
+  .ttl-row.lie   { background: rgba(224,92,58,0.12); border-left: 2px solid var(--red); }
+  .ttl-row.lie   .value { color: var(--red); text-decoration: line-through; }
+  .ttl-row .verdict { font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; margin-left: auto; padding-left: 8px; flex-shrink: 0; padding-top: 2px; }
+  .truth .verdict { color: var(--green); } .lie .verdict { color: var(--red); }
+
+  .confirmed-rel { background: rgba(92,184,92,0.08); border: 1px solid rgba(92,184,92,0.2); border-radius: 3px; padding: 8px 10px; margin: 6px 0; font-size: 0.8rem; color: var(--green); }
+  .confirmed-rel strong { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; display: block; color: rgba(92,184,92,0.6); margin-bottom: 3px; }
+
+  .confessional-note { margin: 6px 0; padding: 6px 10px; background: rgba(200,168,75,0.06); border-left: 2px solid var(--accent); font-size: 0.75rem; color: var(--text-dim); font-style: italic; }
+  .confessional-note strong { color: var(--accent); font-style: normal; font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 2px; }
+
+  .elim-notice { margin-top: 10px; padding: 6px 10px; background: rgba(224,92,58,0.1); border-left: 2px solid var(--red); font-size: 0.75rem; color: var(--red); font-style: italic; }
+
+  .clue-list { list-style: none; padding: 0; }
+  .clue-list li { font-size: 0.8rem; color: var(--text-dim); padding: 3px 0; display: flex; gap: 6px; line-height: 1.4; align-items: flex-start; }
+  .clue-list li::before { content: '—'; color: var(--accent); flex-shrink: 0; }
+
+  .ep-tag { font-size: 0.6rem; padding: 1px 5px; border-radius: 2px; margin-left: 4px; letter-spacing: 1px; flex-shrink: 0; }
+  .ep1 { background: rgba(200,168,75,0.2); color: var(--accent); }
+  .ep2 { background: rgba(92,184,92,0.15); color: #7dd87d; }
+  .ep3 { background: rgba(100,149,237,0.2); color: #90b4f0; }
+
+  .episode-block { background: var(--card); border: 1px solid var(--border); border-radius: 4px; margin-bottom: 16px; overflow: hidden; }
+  .episode-header { padding: 12px 16px; background: rgba(200,168,75,0.08); border-bottom: 1px solid var(--border); font-family: 'Special Elite', cursive; font-size: 0.95rem; color: var(--accent); letter-spacing: 1px; }
+  .episode-content { padding: 14px 16px; }
+  .event-item { display: flex; gap: 10px; padding: 5px 0; font-size: 0.8rem; color: var(--text-dim); border-bottom: 1px solid rgba(58,54,48,0.5); line-height: 1.5; }
+  .event-item:last-child { border-bottom: none; }
+  .event-icon { flex-shrink: 0; width: 20px; text-align: center; }
+
+  .notes-area { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 20px; }
+  .theory-block { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .theory-block:last-child { border-bottom: none; }
+  .theory-player { font-family: 'Special Elite', cursive; color: var(--accent); font-size: 1rem; margin-bottom: 6px; letter-spacing: 1px; }
+  .theory-text { font-size: 0.8rem; color: var(--text-dim); line-height: 1.6; font-style: italic; }
+  .theory-text em { color: var(--accent); font-style: normal; font-weight: bold; }
+
+  @media (max-width: 480px) { body { padding: 12px; } .player-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Claim to Fame — Season 2</h1>
+  <div class="subtitle">Nicole's Detective Notebook &nbsp;·&nbsp; Last Updated: Episode 3</div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat"><span class="stat-value">8</span><span class="stat-label">Still In</span></div>
+  <div class="divider"></div>
+  <div class="stat"><span class="stat-value">3</span><span class="stat-label">Eliminated</span></div>
+  <div class="divider"></div>
+  <div class="stat"><span class="stat-value">3</span><span class="stat-label">Confirmed</span></div>
+  <div class="divider"></div>
+  <div class="stat"><span class="stat-value">Ep. 3</span><span class="stat-label">Progress</span></div>
+</div>
+
+<div class="legend">
+  <span><span class="dot dot-active"></span> Active</span>
+  <span><span class="dot dot-elim"></span> Eliminated</span>
+  <span><span class="dot dot-confirmed"></span> Identity Confirmed</span>
+</div>
+<div class="ttl-key">
+  <span><span class="key-swatch key-truth"></span> Confirmed Truth</span>
+  <span><span class="key-swatch key-lie"></span> Confirmed Lie</span>
+  <span><span class="key-swatch key-unknown"></span> Unknown</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('players',this)">🃏 Players</button>
+  <button class="tab-btn" onclick="showTab('episodes',this)">📺 Episode Log</button>
+  <button class="tab-btn" onclick="showTab('notes',this)">🧠 My Theories</button>
+</div>
+
+<!-- ===== PLAYERS ===== -->
+<div id="tab-players" class="tab-panel active">
+  <div class="player-grid">
+
+    <!-- CARLY — ELIMINATED EP.1 -->
+    <div class="player-card eliminated confirmed">
+      <div class="player-header"><span class="player-name">Carly</span><span class="status-badge badge-eliminated">OUT — EP.1</span></div>
+      <div class="section-label">Two Truths &amp; A Lie</div>
+      <div class="two-truths-lie">
+        <div class="ttl-row"><span class="label">Relation</span><span class="value">Uncle</span></div>
+        <div class="ttl-row"><span class="label">Occupation</span><span class="value">Musician</span></div>
+        <div class="ttl-row"><span class="label">Award</span><span class="value">Oscar</span></div>
+      </div>
+      <div class="confirmed-rel"><strong>✅ Confirmed Identity</strong>Niece of Tom Hanks</div>
+      <div class="elim-notice">⚠️ Ep. 1 — Hugo correctly guessed her</div>
+    </div>
+
+    <!-- TRAVIS — ELIMINATED EP.2 -->
+    <div class="player-card eliminated confirmed">
+      <div class="player-header"><span class="player-name">Travis</span><span class="status-badge badge-eliminated">OUT — EP.2</span></div>
+      <div class="section-label">Two Truths &amp; A Lie</div>
+      <div class="two-truths-lie">
+        <div class="ttl-row truth"><span class="label">Relation</span><span class="value">Father</span><span class="verdict">✓ TRUTH</span></div>
+        <div class="ttl-row lie">  <span class="label">Occupation</span><span class="value">Actor</span><span class="verdict">✗ LIE</span></div>
+        <div class="ttl-row truth"><span class="label">Award</span><span class="value">Critics Choice Award</span><span class="verdict">✓ TRUTH</span></div>
+      </div>
+      <div class="confirmed-rel"><strong>✅ Confirmed Identity</strong>Son of Neil deGrasse Tyson</div>
+      <div class="elim-notice">⚠️ Ep. 2 — Gabriel correctly guessed him</div>
+    </div>
+
+    <!-- JANE — ELIMINATED EP.3 -->
+    <div class="player-card eliminated confirmed">
+      <div class="player-header"><span class="player-name">Jane</span><span class="status-badge badge-eliminated">OUT — EP.3</span></div>
+      <div class="section-label">Two Truths &amp; A Lie</div>
+      <div class="two-truths-lie">
+        <div class="ttl-row lie">  <span class="label">Relation</span><span class="value">Father</span><span class="verdict">✗ LIE</span></div>
+        <div class="ttl-row truth"><span class="label">Occupation</span><span class="value">Musician</span><span class="verdict">✓ TRUTH</span></div>
+        <div class="ttl-row truth"><span class="label">Award</span><span class="value">Grammy</span><span class="verdict">✓ TRUTH</span></div>
+      </div>
+      <div class="confirmed-rel"><strong>✅ Confirmed Identity</strong>Niece of Dolly Parton (real name: Jada Star)</div>
+      <div class="section-label">Key Clues</div>
+      <ul class="clue-list">
+        <li>Relative born: <strong>1946</strong> <span class="ep-tag ep2">EP2</span></li>
+        <li>Ep. 3 headshot clues: <strong>parakeet / parrot, orchid flower, blue dog collar</strong> <span class="ep-tag ep3">EP3</span></li>
+        <li>Karsyn decoded: orchid = Tootsie's Orchid Lounge Nashville; blue collar = "9 to 5" → pointed to Dolly Parton <span class="ep-tag ep3">EP3</span></li>
+      </ul>
+      <div class="confessional-note"><strong>⚠️ Fatal Mistake — Ep. 3</strong>Was the Guesser; incorrectly guessed Chris was related to Elvis Presley. Her own identity was revealed on exit.</div>
+      <div class="elim-notice">⚠️ Ep. 3 — Guessed wrong (Elvis Presley for Chris), eliminated. Dolly Parton sent a video message calling her "my niece, Jada Star."</div>
+    </div>
+
+    <!-- CHRIS -->
+    <div class="player-card">
+      <div class="player-header"><span class="player-name">Chris</span><span class="status-badge badge-active">ACTIVE</span></div>
+      <div class="section-label">Two Truths &amp; A Lie</div>
+      <div class="two-truths-lie">
+        <div class="ttl-row"><span class="label">Relation</span><span class="value">Uncle</span></div>
+        <div class="ttl-row"><span class="label">Occupation</span><span class="value">Musician</span></div>
+        <div class="ttl-row"><span class="label">Award</span><span class="value">Hollywood Walk of Fame Star</span></div>
+      </div>
+      <div class="section-label">Clues</div>
+      <ul class="clue-list">
+        <li>Ep. 2 — Monay won his Wine Room puzzle clue (contents private) <span class="ep-tag ep2">EP2</span></li>
+        <li>Ep. 3 — Jane incorrectly guessed he was Elvis Presley's relative (he is NOT) <span class="ep-tag ep3">EP3</span></li>
+        <li>Ep. 3 — Ep. 3 slingshot challenge clue included hints like "puppy love" and "Russian" — Chris was visibly nervous, suggesting he's close to being figured out <span class="ep-tag ep3">EP3</span></li>
+      </ul>
+    </div>
+
+    <!-- COLE -->
+    <div class="player-card">
+      <div class="player-header"><span class="player-name">Cole</span><span class="status-badge badge-active">ACTIVE</span></div>
+      <div class="section-label">Two Truths &amp; A Lie</div>
+      <div class="two-truths-lie">
+        <div class="ttl-row"><span class="label">Relation</span><span class="value">Father</span></div>
+        <div class="ttl-row"><span class="label">Occupation</span><span class="value">Singer</span></div>
+        <div class="ttl-row"><span class="label">Award</span><span class="value">Grammy</span></div>
+      </div>
+      <div class="section-label">Clues</div>
+      <ul class="clue-list">
+        <li>Ep. 2 — Family goes snowboarding together regularly <span class="ep-tag ep2">EP2</span></li>
+        <li>Ep. 3 — Pieced together the SNL "Buckwheat" + Coming to America clues pointing to <strong>Shayne = Eddie Murphy's daughter</strong>. Kept it to himself. <span class="ep-tag ep3">EP3</span></li>
+      </ul>
+    </div>
+
+    <!-- GABRIEL -->
+    <div class="player-card">
+      <div class="player-header"><span class="player-name">Gabriel</span><span class="status-badge badge-active">ACTIVE</span></div>
+      <div class="section-label">Two Truths &amp; A Lie</div>
+      <div class="two-truths-lie">
+        <div class="ttl-row truth"><span class="label">Relation</span><span class="value">Brother</span><span class="verdict">✓ TRUTH</span></div>
+        <div class="ttl-row lie">  <span class="label">Occupation</span><span class="value">Athlete</span><span class="verdict">✗ LIE</span></div>
+        <div class="ttl-row truth"><span class="label">Award</span><span class="value">NAACP Award</span><span class="verdict">✓ TRUTH</span></div>
+      </div>
+      <div class="confessional-note"><strong>🎬 Ep. 1 Confessional</strong>Admitted "Athlete" is the lie. Looks nothing like his relative.</div>
+      <div class="section-label">Clues</div>
+      <ul class="clue-list">
+        <li>Ep. 2 — Relative born in <strong>San Diego, CA</strong> (challenge penalty) <span class="ep-tag ep2">EP2</span></li>
+        <li>Ep. 2 — Was Guesser, correctly identified Travis as Neil deGrasse Tyson's son <span class="ep-tag ep2">EP2</span></li>
+        <li>Ep. 3 — Bottom 2 in slingshot challenge <span class="ep-tag ep3">EP3</span></li>
+      </ul>
+    </div>
+
+    <!-- HUGO -->
+    <div class="player-card">
+      <div class="player-header"><span class="player-name">Hugo</span><span class="status-badge badge-active">ACTIVE</span></div>
+      <div class="section-label">Two Truths &amp; A Lie</div>
+      <div class="two-truths-lie">
+        <div class="ttl-row truth"><span class="label">Relation</span><span class="value">Grandfather</span><span class="verdict">✓ TRUTH</span></div>
+        <div class="ttl-row lie">  <span class="label">Occupation</span><span class="value">Athlete</span><span class="verdict">✗ LIE</span></div>
+        <div class="ttl-row truth"><span class="label">Award</span><span class="value">Nobel Prize</span><span class="verdict">✓ TRUTH</span></div>
+      </div>
+      <div class="confessional-note"><strong>🎬 Ep. 1 Confessional</strong>Admitted "Athlete" is the lie. Grandfather was once "the most powerful man in the world." Acted more athletic in talent show to protect the lie.</div>
+      <div class="section-label">Clues</div>
+      <ul class="clue-list">
+        <li>Ep. 1 — Was Guesser, correctly identified Carly as Tom Hanks' niece <span class="ep-tag ep1">EP1</span></li>
+        <li>Ep. 3 — Jane suspected Hugo was related to Jimmy Carter but thought he seemed too young <span class="ep-tag ep3">EP3</span></li>
+      </ul>
+    </div>
+
+    <!-- JR -->
+    <div class="player-card">
+      <div class="player-header"><span class="player-name">JR</span><span class="status-badge badge-active">ACTIVE</span></div>
+      <div class="section-label">Two Truths &amp; A Lie</div>
+      <div class="two-truths-lie">
+        <div class="ttl-row truth"><span class="label">Relation</span><span class="value">Brother</span><span class="verdict">✓ TRUTH</span></div>
+        <div class="ttl-row lie">  <span class="label">Occupation</span><span class="value">Musician</span><span class="verdict">✗ LIE</span></div>
+        <div class="ttl-row lie">  <span class="label">Award</span><span class="value">NBA Championship Ring</span><span class="verdict">✗ LIE</span></div>
+      </div>
+      <div class="confessional-note"><strong>🎬 Ep. 3 Confessional</strong>Admitted the NBA Championship Ring was his lie — people always tell him he looks like a basketball player. Note: this means BOTH Occupation AND Award may be lies, OR one of them is the actual lie and "Musician" is also unconfirmed.</div>
+      <div class="section-label">Clues</div>
+      <ul class="clue-list">
+        <li>Ep. 2 — Relative born in a <strong>small town in Georgia</strong> (challenge penalty) <span class="ep-tag ep2">EP2</span></li>
+      </ul>
+    </div>
+
+    <!-- KARSYN -->
+    <div class="player-card">
+      <div class="player-header"><span class="player-name">Karsyn</span><span class="status-badge badge-active">ACTIVE</span></div>
+      <div class="section-label">Two Truths &amp; A Lie</div>
+      <div class="two-truths-lie">
+        <div class="ttl-row"><span class="label">Relation</span><span class="value">Uncle</span></div>
+        <div class="ttl-row"><span class="label">Occupation</span><span class="value">Musician</span></div>
+        <div class="ttl-row"><span class="label">Award</span><span class="value">Inducted into Hall of Fame</span></div>
+      </div>
+      <div class="section-label">Clues</div>
+      <ul class="clue-list">
+        <li>Ep. 3 — Shayne won her Wine Room puzzle clue (contents: Trophy, Eraser, minus E, question mark head, two record players, 4, beer — meaning unclear) <span class="ep-tag ep3">EP3</span></li>
+        <li>Ep. 3 — Was sharp enough to decode Jane's headshot clues (orchid + blue collar) as Dolly Parton <span class="ep-tag ep3">EP3</span></li>
+      </ul>
+    </div>
+
+    <!-- MONAY -->
+    <div class="player-card">
+      <div class="player-header"><span class="player-name">Monay</span><span class="status-badge badge-active">ACTIVE</span></div>
+      <div class="section-label">Two Truths &amp; A Lie</div>
+      <div class="two-truths-lie">
+        <div class="ttl-row truth"><span class="label">Relation</span><span class="value">Father</span><span class="verdict">✓ TRUTH</span></div>
+        <div class="ttl-row lie">  <span class="label">Occupation</span><span class="value">Athlete</span><span class="verdict">✗ LIE</span></div>
+        <div class="ttl-row truth"><span class="label">Award</span><span class="value">Emmy</span><span class="verdict">✓ TRUTH</span></div>
+      </div>
+      <div class="confessional-note"><strong>🎬 Ep. 1 Confessional</strong>Admitted "Athlete" is the lie. Lying is her strategy.</div>
+      <div class="section-label">Clues</div>
+      <ul class="clue-list">
+        <li>Ep. 2 — Won challenge, earned immunity + Chris's Wine Room clue <span class="ep-tag ep2">EP2</span></li>
+        <li>Ep. 3 — Suspected by Karsyn of helping set up Jane for elimination alongside Shayne <span class="ep-tag ep3">EP3</span></li>
+      </ul>
+    </div>
+
+    <!-- OLIVIA -->
+    <div class="player-card">
+      <div class="player-header"><span class="player-name">Olivia</span><span class="status-badge badge-active">ACTIVE</span></div>
+      <div class="section-label">Two Truths &amp; A Lie</div>
+      <div class="two-truths-lie">
+        <div class="ttl-row"><span class="label">Relation</span><span class="value">Brother</span></div>
+        <div class="ttl-row"><span class="label">Occupation</span><span class="value">TV Personality</span></div>
+        <div class="ttl-row"><span class="label">Award</span><span class="value">Razzie</span></div>
+      </div>
+      <div class="section-label">Clues</div>
+      <ul class="clue-list">
+        <li>Ep. 2 — Declared relative born in 1946 was "basically dead" — bad at math apparently <span class="ep-tag ep2">EP2</span></li>
+      </ul>
+    </div>
+
+    <!-- SHAYNE -->
+    <div class="player-card">
+      <div class="player-header"><span class="player-name">Shayne</span><span class="status-badge badge-active">ACTIVE</span></div>
+      <div class="section-label">Two Truths &amp; A Lie</div>
+      <div class="two-truths-lie">
+        <div class="ttl-row"><span class="label">Relation</span><span class="value">Father</span></div>
+        <div class="ttl-row"><span class="label">Occupation</span><span class="value">Musician</span></div>
+        <div class="ttl-row"><span class="label">Award</span><span class="value">Grammy</span></div>
+      </div>
+      <div class="section-label">Clues</div>
+      <ul class="clue-list">
+        <li>Ep. 2 — Relative born <strong>1961</strong> (challenge penalty) <span class="ep-tag ep2">EP2</span></li>
+        <li>Ep. 2 — Relative was close friends with Michael Jackson; took her family to Neverland Ranch <span class="ep-tag ep2">EP2</span></li>
+        <li>Ep. 3 — <strong>Won the slingshot challenge</strong> — earned immunity + Karsyn's Wine Room clue <span class="ep-tag ep3">EP3</span></li>
+        <li>Ep. 3 — Cole secretly decoded SNL "Buckwheat" + Coming to America clues = Eddie Murphy. House is increasingly suspicious of her. <span class="ep-tag ep3">EP3</span></li>
+        <li>Ep. 3 — Stayed low profile to avoid suspicion <span class="ep-tag ep3">EP3</span></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== EPISODE LOG ===== -->
+<div id="tab-episodes" class="tab-panel">
+
+  <div class="episode-block">
+    <div class="episode-header">📺 Episode 1 — Season Premiere</div>
+    <div class="episode-content">
+      <div class="event-item"><span class="event-icon">🎭</span><span>All 12 players played Two Truths &amp; A Lie at the opening cocktail party</span></div>
+      <div class="event-item"><span class="event-icon">🎬</span><span><strong>Gabriel</strong> confessional — lie was "Athlete." Looks nothing like his relative.</span></div>
+      <div class="event-item"><span class="event-icon">🎬</span><span><strong>Hugo</strong> confessional — lie was "Athlete." Grandfather was once "the most powerful man in the world."</span></div>
+      <div class="event-item"><span class="event-icon">🎬</span><span><strong>Monay</strong> confessional — lie was "Athlete." Lying is her strategy.</span></div>
+      <div class="event-item"><span class="event-icon">🎯</span><span><strong>Hugo</strong> was Guesser — correctly identified <strong>Carly</strong> as Tom Hanks' niece</span></div>
+      <div class="event-item"><span class="event-icon">🚪</span><span><strong>Carly</strong> eliminated — Tom Hanks' niece confirmed</span></div>
+    </div>
+  </div>
+
+  <div class="episode-block">
+    <div class="episode-header">📺 Episode 2 — "Don't Get Chummy You Dummy"</div>
+    <div class="episode-content">
+      <div class="event-item"><span class="event-icon">🏃</span><span><strong>Challenge:</strong> Babadook-themed obstacle course — barefoot Lego run, clown makeup, fish chum dive. Three rounds.</span></div>
+      <div class="event-item"><span class="event-icon">📍</span><span>Round 1 penalties — birth city revealed: <strong>JR</strong> (small town in Georgia), <strong>Gabriel</strong> (San Diego, CA)</span></div>
+      <div class="event-item"><span class="event-icon">📅</span><span>Round 2 penalties — birth year revealed: <strong>Jane's relative</strong> (1946), <strong>Shayne's relative</strong> (1961)</span></div>
+      <div class="event-item"><span class="event-icon">🏆</span><span><strong>Monay</strong> won — immunity + Chris's Wine Room clue</span></div>
+      <div class="event-item"><span class="event-icon">💣</span><span><strong>Travis</strong> shared Shayne's clue with Jane hoping she could decode it. Jane identified it as Eddie Murphy — then ratted Travis out to the house as Neil deGrasse Tyson's son.</span></div>
+      <div class="event-item"><span class="event-icon">💬</span><span><strong>Shayne</strong> shared: relative was close friends with Michael Jackson, took her family to Neverland Ranch</span></div>
+      <div class="event-item"><span class="event-icon">🎯</span><span><strong>Gabriel</strong> was Guesser — correctly identified <strong>Travis</strong> as Neil deGrasse Tyson's son</span></div>
+      <div class="event-item"><span class="event-icon">🚪</span><span><strong>Travis</strong> eliminated — Neil deGrasse Tyson's son confirmed</span></div>
+    </div>
+  </div>
+
+  <div class="episode-block">
+    <div class="episode-header">📺 Episode 3 — "Head Shots and Thick Plots"</div>
+    <div class="episode-content">
+      <div class="event-item"><span class="event-icon">🏆</span><span><strong>Challenge:</strong> Slingshot "headshots" — two teams competed with slingshots to knock out face balls. Losing team had all 5 members' headshot clues revealed.</span></div>
+      <div class="event-item"><span class="event-icon">🥇</span><span><strong>Shayne</strong> won challenge — immunity + Karsyn's Wine Room clue</span></div>
+      <div class="event-item"><span class="event-icon">🖼️</span><span><strong>Jane's headshot clues revealed:</strong> parakeet/parrot, orchid flower, blue dog collar</span></div>
+      <div class="event-item"><span class="event-icon">🧠</span><span><strong>Karsyn</strong> brilliantly decoded Jane's clues: orchid = Tootsie's Orchid Lounge in Nashville; blue collar = "9 to 5" → pointed to <strong>Dolly Parton</strong></span></div>
+      <div class="event-item"><span class="event-icon">🎬</span><span><strong>JR</strong> confessional — admitted his lie was the <strong>NBA Championship Ring</strong>. People always say he looks like a basketball player.</span></div>
+      <div class="event-item"><span class="event-icon">🔍</span><span><strong>Cole</strong> secretly decoded SNL "Buckwheat" + Coming to America clues = <strong>Eddie Murphy</strong> = Shayne's relative. Kept it to himself.</span></div>
+      <div class="event-item"><span class="event-icon">🔍</span><span><strong>Jane</strong> feared the "puppy love" clue was for her (Dolly's first charted single was "Puppy Love"). Clue was actually connected to Chris.</span></div>
+      <div class="event-item"><span class="event-icon">🎯</span><span><strong>Jane</strong> was Guesser — incorrectly guessed <strong>Chris</strong> was related to Elvis Presley</span></div>
+      <div class="event-item"><span class="event-icon">🚪</span><span><strong>Jane</strong> eliminated — Dolly Parton's niece (real name: Jada Star) confirmed. Dolly sent a video message.</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== THEORIES ===== -->
+<div id="tab-notes" class="tab-panel">
+  <div class="notes-area">
+    <div style="color: var(--muted); font-size: 0.8rem; font-style: italic; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 14px;">
+      📝 Working theories — updated each episode.
+    </div>
+
+    <div class="theory-block">
+      <div class="theory-player">Hugo 🚨</div>
+      <div class="theory-text">Nobel Prize + Grandfather + "most powerful man in the world." Jane already suspected Jimmy Carter but thought Hugo seemed too young. <em>Nobel Peace Prize winner, former US President, born 1924 — Carter fits perfectly.</em> Sharpest guesser in the house too.</div>
+    </div>
+
+    <div class="theory-block">
+      <div class="theory-player">Shayne 🔥</div>
+      <div class="theory-text">Relative born 1961, MJ connection to Neverland Ranch, "Buckwheat" SNL + Coming to America clues. Cole has privately confirmed it's Eddie Murphy. <em>She's a huge target — won immunity this week but can't win every week.</em></div>
+    </div>
+
+    <div class="theory-block">
+      <div class="theory-player">JR ❓</div>
+      <div class="theory-text">Brother + born in small-town Georgia. NBA ring was the lie — so he's NOT related to a basketball player. "Musician" is still unconfirmed. <em>Georgia + musician brother with NAACP-level accolades... interesting pool.</em></div>
+    </div>
+
+    <div class="theory-block">
+      <div class="theory-player">Chris 👀</div>
+      <div class="theory-text">NOT Elvis Presley's relative (Jane guessed wrong). The "puppy love" and "Russian" clues from Ep. 3 had him visibly nervous. <em>Donny Osmond had a famous song called "Puppy Love" — strong lead.</em></div>
+    </div>
+
+    <div class="theory-block">
+      <div class="theory-player">Gabriel</div>
+      <div class="theory-text">Brother + NAACP Award + San Diego born. Not an athlete. Has now won the Guesser spot twice correctly. <em>Dangerous player — best to not be on his radar.</em></div>
+    </div>
+
+    <div class="theory-block">
+      <div class="theory-player">Monay</div>
+      <div class="theory-text">Father + Emmy winner. Has Chris's Wine Room clue. <em>Accumulating intel fast and playing both sides.</em></div>
+    </div>
+
+    <div class="theory-block">
+      <div class="theory-player">Karsyn</div>
+      <div class="theory-text">Uncle + Musician + Hall of Fame. Now has Shayne's Wine Room clue (decoding unclear: trophy, record players, beer...). <em>Sharp decoder — cracked Jane's Dolly clues impressively fast.</em></div>
+    </div>
+
+    <p style="color: var(--muted); font-size: 0.75rem; font-style: italic; margin-top: 20px;">— Share your theories after each episode and I'll add them! —</p>
+  </div>
+</div>
+
+<script>
+  function showTab(name, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+</body>
+</html>
