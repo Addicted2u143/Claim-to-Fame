@@ -94,6 +94,10 @@
   .ep1 { background: rgba(200,168,75,0.2); color: var(--accent); }
   .ep2 { background: rgba(92,184,92,0.15); color: #7dd87d; }
   .ep3 { background: rgba(100,149,237,0.2); color: #90b4f0; }
+  .ep4 { background: rgba(200,100,200,0.2); color: #d490d4; }
+
+  .nicole-theory { margin: 4px 0; padding: 5px 10px; background: rgba(224,92,58,0.08); border-left: 2px solid var(--red); font-size: 0.75rem; color: #e08060; font-style: italic; }
+  .nicole-theory strong { font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase; color: var(--red); display: block; margin-bottom: 2px; font-style: normal; }
 
   .episode-block { background: var(--card); border: 1px solid var(--border); border-radius: 4px; margin-bottom: 16px; overflow: hidden; }
   .episode-header { padding: 12px 16px; background: rgba(200,168,75,0.08); border-bottom: 1px solid var(--border); font-family: 'Special Elite', cursive; font-size: 0.95rem; color: var(--accent); letter-spacing: 1px; }
@@ -108,6 +112,8 @@
   .theory-player { font-family: 'Special Elite', cursive; color: var(--accent); font-size: 1rem; margin-bottom: 6px; letter-spacing: 1px; }
   .theory-text { font-size: 0.8rem; color: var(--text-dim); line-height: 1.6; font-style: italic; }
   .theory-text em { color: var(--accent); font-style: normal; font-weight: bold; }
+  .theory-text .correct { color: var(--green); font-style: normal; font-weight: bold; }
+  .theory-text .wrong { color: var(--red); font-style: normal; }
 
   @media (max-width: 480px) { body { padding: 12px; } .player-grid { grid-template-columns: 1fr; } }
 </style>
@@ -116,17 +122,17 @@
 
 <header>
   <h1>Claim to Fame — Season 2</h1>
-  <div class="subtitle">Nicole's Detective Notebook &nbsp;·&nbsp; Last Updated: Episode 3</div>
+  <div class="subtitle">Nicole's Detective Notebook &nbsp;·&nbsp; Last Updated: Episode 4</div>
 </header>
 
 <div class="stats-bar">
-  <div class="stat"><span class="stat-value">8</span><span class="stat-label">Still In</span></div>
+  <div class="stat"><span class="stat-value">7</span><span class="stat-label">Still In</span></div>
   <div class="divider"></div>
-  <div class="stat"><span class="stat-value">3</span><span class="stat-label">Eliminated</span></div>
+  <div class="stat"><span class="stat-value">4</span><span class="stat-label">Eliminated</span></div>
   <div class="divider"></div>
-  <div class="stat"><span class="stat-value">3</span><span class="stat-label">Confirmed</span></div>
+  <div class="stat"><span class="stat-value">4</span><span class="stat-label">Confirmed</span></div>
   <div class="divider"></div>
-  <div class="stat"><span class="stat-value">Ep. 3</span><span class="stat-label">Progress</span></div>
+  <div class="stat"><span class="stat-value">Ep. 4</span><span class="stat-label">Progress</span></div>
 </div>
 
 <div class="legend">
@@ -150,7 +156,7 @@
 <div id="tab-players" class="tab-panel active">
   <div class="player-grid">
 
-    <!-- CARLY — ELIMINATED EP.1 -->
+    <!-- CARLY — OUT EP.1 -->
     <div class="player-card eliminated confirmed">
       <div class="player-header"><span class="player-name">Carly</span><span class="status-badge badge-eliminated">OUT — EP.1</span></div>
       <div class="section-label">Two Truths &amp; A Lie</div>
@@ -159,11 +165,11 @@
         <div class="ttl-row"><span class="label">Occupation</span><span class="value">Musician</span></div>
         <div class="ttl-row"><span class="label">Award</span><span class="value">Oscar</span></div>
       </div>
-      <div class="confirmed-rel"><strong>✅ Confirmed Identity</strong>Niece of Tom Hanks</div>
+      <div class="confirmed-rel"><strong>✅ Confirmed</strong>Niece of Tom Hanks</div>
       <div class="elim-notice">⚠️ Ep. 1 — Hugo correctly guessed her</div>
     </div>
 
-    <!-- TRAVIS — ELIMINATED EP.2 -->
+    <!-- TRAVIS — OUT EP.2 -->
     <div class="player-card eliminated confirmed">
       <div class="player-header"><span class="player-name">Travis</span><span class="status-badge badge-eliminated">OUT — EP.2</span></div>
       <div class="section-label">Two Truths &amp; A Lie</div>
@@ -172,11 +178,11 @@
         <div class="ttl-row lie">  <span class="label">Occupation</span><span class="value">Actor</span><span class="verdict">✗ LIE</span></div>
         <div class="ttl-row truth"><span class="label">Award</span><span class="value">Critics Choice Award</span><span class="verdict">✓ TRUTH</span></div>
       </div>
-      <div class="confirmed-rel"><strong>✅ Confirmed Identity</strong>Son of Neil deGrasse Tyson</div>
+      <div class="confirmed-rel"><strong>✅ Confirmed</strong>Son of Neil deGrasse Tyson</div>
       <div class="elim-notice">⚠️ Ep. 2 — Gabriel correctly guessed him</div>
     </div>
 
-    <!-- JANE — ELIMINATED EP.3 -->
+    <!-- JANE — OUT EP.3 -->
     <div class="player-card eliminated confirmed">
       <div class="player-header"><span class="player-name">Jane</span><span class="status-badge badge-eliminated">OUT — EP.3</span></div>
       <div class="section-label">Two Truths &amp; A Lie</div>
@@ -185,15 +191,29 @@
         <div class="ttl-row truth"><span class="label">Occupation</span><span class="value">Musician</span><span class="verdict">✓ TRUTH</span></div>
         <div class="ttl-row truth"><span class="label">Award</span><span class="value">Grammy</span><span class="verdict">✓ TRUTH</span></div>
       </div>
-      <div class="confirmed-rel"><strong>✅ Confirmed Identity</strong>Niece of Dolly Parton (real name: Jada Star)</div>
+      <div class="confirmed-rel"><strong>✅ Confirmed</strong>Niece of Dolly Parton (Jada Star)</div>
+      <div class="elim-notice">⚠️ Ep. 3 — Guessed wrong (Elvis for Chris), eliminated</div>
+    </div>
+
+    <!-- SHAYNE — OUT EP.4 -->
+    <div class="player-card eliminated confirmed">
+      <div class="player-header"><span class="player-name">Shayne</span><span class="status-badge badge-eliminated">OUT — EP.4</span></div>
+      <div class="section-label">Two Truths &amp; A Lie</div>
+      <div class="two-truths-lie">
+        <div class="ttl-row truth"><span class="label">Relation</span><span class="value">Father</span><span class="verdict">✓ TRUTH</span></div>
+        <div class="ttl-row lie">  <span class="label">Occupation</span><span class="value">Musician</span><span class="verdict">✗ LIE</span></div>
+        <div class="ttl-row lie">  <span class="label">Award</span><span class="value">Grammy</span><span class="verdict">✗ LIE</span></div>
+      </div>
+      <div class="confirmed-rel"><strong>✅ Confirmed</strong>Daughter of Eddie Murphy (Shayne Audra Murphy)</div>
       <div class="section-label">Key Clues</div>
       <ul class="clue-list">
-        <li>Relative born: <strong>1946</strong> <span class="ep-tag ep2">EP2</span></li>
-        <li>Ep. 3 headshot clues: <strong>parakeet / parrot, orchid flower, blue dog collar</strong> <span class="ep-tag ep3">EP3</span></li>
-        <li>Karsyn decoded: orchid = Tootsie's Orchid Lounge Nashville; blue collar = "9 to 5" → pointed to Dolly Parton <span class="ep-tag ep3">EP3</span></li>
+        <li>Relative born 1961 <span class="ep-tag ep2">EP2</span></li>
+        <li>Relative close friends with Michael Jackson; took family to Neverland Ranch <span class="ep-tag ep2">EP2</span></li>
+        <li>SNL "Buckwheat" + Coming to America clues decoded by Cole <span class="ep-tag ep3">EP3</span></li>
+        <li>Ep. 3 — Won challenge, pulled Karsyn's Wine Room clue <span class="ep-tag ep3">EP3</span></li>
       </ul>
-      <div class="confessional-note"><strong>⚠️ Fatal Mistake — Ep. 3</strong>Was the Guesser; incorrectly guessed Chris was related to Elvis Presley. Her own identity was revealed on exit.</div>
-      <div class="elim-notice">⚠️ Ep. 3 — Guessed wrong (Elvis Presley for Chris), eliminated. Dolly Parton sent a video message calling her "my niece, Jada Star."</div>
+      <div class="nicole-theory"><strong>🎯 Nicole's Theory — CORRECT!</strong>Called Shayne = Eddie Murphy's daughter</div>
+      <div class="elim-notice">⚠️ Ep. 4 — Cole (her ally!) correctly guessed her. Eddie Murphy made a cameo. Monay swore revenge on Cole.</div>
     </div>
 
     <!-- CHRIS -->
@@ -207,10 +227,13 @@
       </div>
       <div class="section-label">Clues</div>
       <ul class="clue-list">
-        <li>Ep. 2 — Monay won his Wine Room puzzle clue (contents private) <span class="ep-tag ep2">EP2</span></li>
-        <li>Ep. 3 — Jane incorrectly guessed he was Elvis Presley's relative (he is NOT) <span class="ep-tag ep3">EP3</span></li>
-        <li>Ep. 3 — Ep. 3 slingshot challenge clue included hints like "puppy love" and "Russian" — Chris was visibly nervous, suggesting he's close to being figured out <span class="ep-tag ep3">EP3</span></li>
+        <li>Ep. 2 — Monay holds his Wine Room puzzle clue <span class="ep-tag ep2">EP2</span></li>
+        <li>Ep. 3 — NOT Elvis Presley's relative (Jane guessed wrong) <span class="ep-tag ep3">EP3</span></li>
+        <li>Ep. 3 — "Puppy love" and "Russian" clues had him visibly nervous <span class="ep-tag ep3">EP3</span></li>
+        <li>Ep. 4 — Statue challenge: Hugo suspected the flamingo was Chris's clue <span class="ep-tag ep4">EP4</span></li>
+        <li>Ep. 4 — Gabriel and Chris formed a surprise alliance <span class="ep-tag ep4">EP4</span></li>
       </ul>
+      <div class="nicole-theory"><strong>🔍 Nicole's Theory</strong>Related to Donny Osmond — "Puppy Love" clue fits perfectly</div>
     </div>
 
     <!-- COLE -->
@@ -225,7 +248,10 @@
       <div class="section-label">Clues</div>
       <ul class="clue-list">
         <li>Ep. 2 — Family goes snowboarding together regularly <span class="ep-tag ep2">EP2</span></li>
-        <li>Ep. 3 — Pieced together the SNL "Buckwheat" + Coming to America clues pointing to <strong>Shayne = Eddie Murphy's daughter</strong>. Kept it to himself. <span class="ep-tag ep3">EP3</span></li>
+        <li>Ep. 4 — During statue challenge, noticed the giant <strong>Swiss cheese</strong> statue and privately thought it was his clue <span class="ep-tag ep4">EP4</span></li>
+        <li>Ep. 4 — Was Guesser — blindsided ally Shayne by correctly guessing Eddie Murphy as her dad. Massive betrayal. <span class="ep-tag ep4">EP4</span></li>
+        <li>Ep. 4 — Now has a <strong>big target on his back</strong> — Monay swore revenge <span class="ep-tag ep4">EP4</span></li>
+        <li>Clue Wall: diary + piano — Monay &amp; Shayne had already figured him out before her elimination <span class="ep-tag ep4">EP4</span></li>
       </ul>
     </div>
 
@@ -241,9 +267,10 @@
       <div class="confessional-note"><strong>🎬 Ep. 1 Confessional</strong>Admitted "Athlete" is the lie. Looks nothing like his relative.</div>
       <div class="section-label">Clues</div>
       <ul class="clue-list">
-        <li>Ep. 2 — Relative born in <strong>San Diego, CA</strong> (challenge penalty) <span class="ep-tag ep2">EP2</span></li>
-        <li>Ep. 2 — Was Guesser, correctly identified Travis as Neil deGrasse Tyson's son <span class="ep-tag ep2">EP2</span></li>
-        <li>Ep. 3 — Bottom 2 in slingshot challenge <span class="ep-tag ep3">EP3</span></li>
+        <li>Relative born in <strong>San Diego, CA</strong> <span class="ep-tag ep2">EP2</span></li>
+        <li>Ep. 2 — Correctly guessed Travis = Neil deGrasse Tyson's son <span class="ep-tag ep2">EP2</span></li>
+        <li>Ep. 4 — Formed surprise alliance with Chris <span class="ep-tag ep4">EP4</span></li>
+        <li>Ep. 4 — House believed he was pointing them toward Jeff Gordon clue for Karsyn <span class="ep-tag ep4">EP4</span></li>
       </ul>
     </div>
 
@@ -256,11 +283,12 @@
         <div class="ttl-row lie">  <span class="label">Occupation</span><span class="value">Athlete</span><span class="verdict">✗ LIE</span></div>
         <div class="ttl-row truth"><span class="label">Award</span><span class="value">Nobel Prize</span><span class="verdict">✓ TRUTH</span></div>
       </div>
-      <div class="confessional-note"><strong>🎬 Ep. 1 Confessional</strong>Admitted "Athlete" is the lie. Grandfather was once "the most powerful man in the world." Acted more athletic in talent show to protect the lie.</div>
+      <div class="confessional-note"><strong>🎬 Ep. 1 Confessional</strong>Admitted "Athlete" is the lie. Grandfather was once "the most powerful man in the world."</div>
       <div class="section-label">Clues</div>
       <ul class="clue-list">
-        <li>Ep. 1 — Was Guesser, correctly identified Carly as Tom Hanks' niece <span class="ep-tag ep1">EP1</span></li>
-        <li>Ep. 3 — Jane suspected Hugo was related to Jimmy Carter but thought he seemed too young <span class="ep-tag ep3">EP3</span></li>
+        <li>Ep. 1 — Correctly guessed Carly = Tom Hanks' niece <span class="ep-tag ep1">EP1</span></li>
+        <li>Ep. 3 — Jane suspected Jimmy Carter but thought Hugo was too young <span class="ep-tag ep3">EP3</span></li>
+        <li>Ep. 4 — Statue challenge: believed the <strong>eagle</strong> was his clue <span class="ep-tag ep4">EP4</span></li>
       </ul>
     </div>
 
@@ -270,13 +298,15 @@
       <div class="section-label">Two Truths &amp; A Lie</div>
       <div class="two-truths-lie">
         <div class="ttl-row truth"><span class="label">Relation</span><span class="value">Brother</span><span class="verdict">✓ TRUTH</span></div>
-        <div class="ttl-row lie">  <span class="label">Occupation</span><span class="value">Musician</span><span class="verdict">✗ LIE</span></div>
+        <div class="ttl-row"><span class="label">Occupation</span><span class="value">Musician</span></div>
         <div class="ttl-row lie">  <span class="label">Award</span><span class="value">NBA Championship Ring</span><span class="verdict">✗ LIE</span></div>
       </div>
-      <div class="confessional-note"><strong>🎬 Ep. 3 Confessional</strong>Admitted the NBA Championship Ring was his lie — people always tell him he looks like a basketball player. Note: this means BOTH Occupation AND Award may be lies, OR one of them is the actual lie and "Musician" is also unconfirmed.</div>
+      <div class="confessional-note"><strong>🎬 Ep. 3 Confessional</strong>Admitted NBA ring was the lie — people always say he looks like a basketball player.</div>
       <div class="section-label">Clues</div>
       <ul class="clue-list">
-        <li>Ep. 2 — Relative born in a <strong>small town in Georgia</strong> (challenge penalty) <span class="ep-tag ep2">EP2</span></li>
+        <li>Relative born in a <strong>small town in Georgia</strong> <span class="ep-tag ep2">EP2</span></li>
+        <li>Ep. 4 — Decoded Karsyn's clue as pointing to <strong>Jeff Gordon</strong> and shared that read with others <span class="ep-tag ep4">EP4</span></li>
+        <li>Ep. 4 — Statue challenge: Hugo suspected the <strong>butterfly</strong> was JR's clue <span class="ep-tag ep4">EP4</span></li>
       </ul>
     </div>
 
@@ -291,9 +321,11 @@
       </div>
       <div class="section-label">Clues</div>
       <ul class="clue-list">
-        <li>Ep. 3 — Shayne won her Wine Room puzzle clue (contents: Trophy, Eraser, minus E, question mark head, two record players, 4, beer — meaning unclear) <span class="ep-tag ep3">EP3</span></li>
-        <li>Ep. 3 — Was sharp enough to decode Jane's headshot clues (orchid + blue collar) as Dolly Parton <span class="ep-tag ep3">EP3</span></li>
+        <li>Ep. 3 — Wine Room clue: Trophy, Eraser, minus E, question mark head, two record players, 4, beer — meaning still unclear <span class="ep-tag ep3">EP3</span></li>
+        <li>Ep. 4 — JR decoded her clue as pointing to <strong>Jeff Gordon</strong>; Shayne and Monay pushed this read on others to protect Shayne <span class="ep-tag ep4">EP4</span></li>
+        <li>Ep. 4 — Statue challenge: was in Shayne/Monay alliance bloc <span class="ep-tag ep4">EP4</span></li>
       </ul>
+      <div class="nicole-theory"><strong>🔍 Nicole's Theory</strong>Related to Jeff Gordon</div>
     </div>
 
     <!-- MONAY -->
@@ -308,8 +340,9 @@
       <div class="confessional-note"><strong>🎬 Ep. 1 Confessional</strong>Admitted "Athlete" is the lie. Lying is her strategy.</div>
       <div class="section-label">Clues</div>
       <ul class="clue-list">
-        <li>Ep. 2 — Won challenge, earned immunity + Chris's Wine Room clue <span class="ep-tag ep2">EP2</span></li>
-        <li>Ep. 3 — Suspected by Karsyn of helping set up Jane for elimination alongside Shayne <span class="ep-tag ep3">EP3</span></li>
+        <li>Ep. 2 — Won challenge, holds Chris's Wine Room clue <span class="ep-tag ep2">EP2</span></li>
+        <li>Ep. 4 — Had already figured out Cole's identity (diary + piano clues = Alicia Keys) before Shayne's elimination <span class="ep-tag ep4">EP4</span></li>
+        <li>Ep. 4 — Swore revenge on Cole after he eliminated her best friend Shayne <span class="ep-tag ep4">EP4</span></li>
       </ul>
     </div>
 
@@ -324,26 +357,8 @@
       </div>
       <div class="section-label">Clues</div>
       <ul class="clue-list">
-        <li>Ep. 2 — Declared relative born in 1946 was "basically dead" — bad at math apparently <span class="ep-tag ep2">EP2</span></li>
-      </ul>
-    </div>
-
-    <!-- SHAYNE -->
-    <div class="player-card">
-      <div class="player-header"><span class="player-name">Shayne</span><span class="status-badge badge-active">ACTIVE</span></div>
-      <div class="section-label">Two Truths &amp; A Lie</div>
-      <div class="two-truths-lie">
-        <div class="ttl-row"><span class="label">Relation</span><span class="value">Father</span></div>
-        <div class="ttl-row"><span class="label">Occupation</span><span class="value">Musician</span></div>
-        <div class="ttl-row"><span class="label">Award</span><span class="value">Grammy</span></div>
-      </div>
-      <div class="section-label">Clues</div>
-      <ul class="clue-list">
-        <li>Ep. 2 — Relative born <strong>1961</strong> (challenge penalty) <span class="ep-tag ep2">EP2</span></li>
-        <li>Ep. 2 — Relative was close friends with Michael Jackson; took her family to Neverland Ranch <span class="ep-tag ep2">EP2</span></li>
-        <li>Ep. 3 — <strong>Won the slingshot challenge</strong> — earned immunity + Karsyn's Wine Room clue <span class="ep-tag ep3">EP3</span></li>
-        <li>Ep. 3 — Cole secretly decoded SNL "Buckwheat" + Coming to America clues = Eddie Murphy. House is increasingly suspicious of her. <span class="ep-tag ep3">EP3</span></li>
-        <li>Ep. 3 — Stayed low profile to avoid suspicion <span class="ep-tag ep3">EP3</span></li>
+        <li>Ep. 2 — Declared a 1946 birth year was "basically dead" — not great at math <span class="ep-tag ep2">EP2</span></li>
+        <li>Ep. 4 — Part of Shayne/Monay alliance bloc <span class="ep-tag ep4">EP4</span></li>
       </ul>
     </div>
 
@@ -356,11 +371,9 @@
   <div class="episode-block">
     <div class="episode-header">📺 Episode 1 — Season Premiere</div>
     <div class="episode-content">
-      <div class="event-item"><span class="event-icon">🎭</span><span>All 12 players played Two Truths &amp; A Lie at the opening cocktail party</span></div>
-      <div class="event-item"><span class="event-icon">🎬</span><span><strong>Gabriel</strong> confessional — lie was "Athlete." Looks nothing like his relative.</span></div>
-      <div class="event-item"><span class="event-icon">🎬</span><span><strong>Hugo</strong> confessional — lie was "Athlete." Grandfather was once "the most powerful man in the world."</span></div>
-      <div class="event-item"><span class="event-icon">🎬</span><span><strong>Monay</strong> confessional — lie was "Athlete." Lying is her strategy.</span></div>
-      <div class="event-item"><span class="event-icon">🎯</span><span><strong>Hugo</strong> was Guesser — correctly identified <strong>Carly</strong> as Tom Hanks' niece</span></div>
+      <div class="event-item"><span class="event-icon">🎭</span><span>All 12 players played Two Truths &amp; A Lie</span></div>
+      <div class="event-item"><span class="event-icon">🎬</span><span>Gabriel, Hugo &amp; Monay all admitted in confessionals — "Athlete" was their lie</span></div>
+      <div class="event-item"><span class="event-icon">🎯</span><span><strong>Hugo</strong> — Guesser — correctly IDed <strong>Carly</strong> as Tom Hanks' niece</span></div>
       <div class="event-item"><span class="event-icon">🚪</span><span><strong>Carly</strong> eliminated — Tom Hanks' niece confirmed</span></div>
     </div>
   </div>
@@ -368,13 +381,12 @@
   <div class="episode-block">
     <div class="episode-header">📺 Episode 2 — "Don't Get Chummy You Dummy"</div>
     <div class="episode-content">
-      <div class="event-item"><span class="event-icon">🏃</span><span><strong>Challenge:</strong> Babadook-themed obstacle course — barefoot Lego run, clown makeup, fish chum dive. Three rounds.</span></div>
-      <div class="event-item"><span class="event-icon">📍</span><span>Round 1 penalties — birth city revealed: <strong>JR</strong> (small town in Georgia), <strong>Gabriel</strong> (San Diego, CA)</span></div>
-      <div class="event-item"><span class="event-icon">📅</span><span>Round 2 penalties — birth year revealed: <strong>Jane's relative</strong> (1946), <strong>Shayne's relative</strong> (1961)</span></div>
+      <div class="event-item"><span class="event-icon">🏃</span><span>Babadook obstacle course — 3 rounds with penalties each round</span></div>
+      <div class="event-item"><span class="event-icon">📍</span><span>Round 1 penalties — birth city: JR (small-town Georgia), Gabriel (San Diego)</span></div>
+      <div class="event-item"><span class="event-icon">📅</span><span>Round 2 penalties — birth year: Jane's relative (1946), Shayne's relative (1961)</span></div>
       <div class="event-item"><span class="event-icon">🏆</span><span><strong>Monay</strong> won — immunity + Chris's Wine Room clue</span></div>
-      <div class="event-item"><span class="event-icon">💣</span><span><strong>Travis</strong> shared Shayne's clue with Jane hoping she could decode it. Jane identified it as Eddie Murphy — then ratted Travis out to the house as Neil deGrasse Tyson's son.</span></div>
-      <div class="event-item"><span class="event-icon">💬</span><span><strong>Shayne</strong> shared: relative was close friends with Michael Jackson, took her family to Neverland Ranch</span></div>
-      <div class="event-item"><span class="event-icon">🎯</span><span><strong>Gabriel</strong> was Guesser — correctly identified <strong>Travis</strong> as Neil deGrasse Tyson's son</span></div>
+      <div class="event-item"><span class="event-icon">💣</span><span>Travis shared Shayne's clue with Jane → Jane ratted him out → whole house knew he was Neil's son</span></div>
+      <div class="event-item"><span class="event-icon">🎯</span><span><strong>Gabriel</strong> — Guesser — correctly IDed <strong>Travis</strong> as Neil deGrasse Tyson's son</span></div>
       <div class="event-item"><span class="event-icon">🚪</span><span><strong>Travis</strong> eliminated — Neil deGrasse Tyson's son confirmed</span></div>
     </div>
   </div>
@@ -382,15 +394,28 @@
   <div class="episode-block">
     <div class="episode-header">📺 Episode 3 — "Head Shots and Thick Plots"</div>
     <div class="episode-content">
-      <div class="event-item"><span class="event-icon">🏆</span><span><strong>Challenge:</strong> Slingshot "headshots" — two teams competed with slingshots to knock out face balls. Losing team had all 5 members' headshot clues revealed.</span></div>
-      <div class="event-item"><span class="event-icon">🥇</span><span><strong>Shayne</strong> won challenge — immunity + Karsyn's Wine Room clue</span></div>
-      <div class="event-item"><span class="event-icon">🖼️</span><span><strong>Jane's headshot clues revealed:</strong> parakeet/parrot, orchid flower, blue dog collar</span></div>
-      <div class="event-item"><span class="event-icon">🧠</span><span><strong>Karsyn</strong> brilliantly decoded Jane's clues: orchid = Tootsie's Orchid Lounge in Nashville; blue collar = "9 to 5" → pointed to <strong>Dolly Parton</strong></span></div>
-      <div class="event-item"><span class="event-icon">🎬</span><span><strong>JR</strong> confessional — admitted his lie was the <strong>NBA Championship Ring</strong>. People always say he looks like a basketball player.</span></div>
-      <div class="event-item"><span class="event-icon">🔍</span><span><strong>Cole</strong> secretly decoded SNL "Buckwheat" + Coming to America clues = <strong>Eddie Murphy</strong> = Shayne's relative. Kept it to himself.</span></div>
-      <div class="event-item"><span class="event-icon">🔍</span><span><strong>Jane</strong> feared the "puppy love" clue was for her (Dolly's first charted single was "Puppy Love"). Clue was actually connected to Chris.</span></div>
-      <div class="event-item"><span class="event-icon">🎯</span><span><strong>Jane</strong> was Guesser — incorrectly guessed <strong>Chris</strong> was related to Elvis Presley</span></div>
-      <div class="event-item"><span class="event-icon">🚪</span><span><strong>Jane</strong> eliminated — Dolly Parton's niece (real name: Jada Star) confirmed. Dolly sent a video message.</span></div>
+      <div class="event-item"><span class="event-icon">🏆</span><span>Slingshot "headshots" challenge — losing team had all 5 members' clues revealed</span></div>
+      <div class="event-item"><span class="event-icon">🥇</span><span><strong>Shayne</strong> won — immunity + Karsyn's Wine Room clue</span></div>
+      <div class="event-item"><span class="event-icon">🖼️</span><span>Jane's headshots: parakeet, orchid, blue collar — Karsyn decoded as Dolly Parton</span></div>
+      <div class="event-item"><span class="event-icon">🎬</span><span>JR confessional — admitted NBA ring was the lie</span></div>
+      <div class="event-item"><span class="event-icon">🔍</span><span>Cole secretly decoded Buckwheat + Coming to America = Eddie Murphy = Shayne's dad</span></div>
+      <div class="event-item"><span class="event-icon">🎯</span><span><strong>Jane</strong> — Guesser — incorrectly guessed Chris = Elvis Presley's relative</span></div>
+      <div class="event-item"><span class="event-icon">🚪</span><span><strong>Jane</strong> eliminated — Dolly Parton's niece (Jada Star) confirmed. Dolly sent a video message.</span></div>
+    </div>
+  </div>
+
+  <div class="episode-block">
+    <div class="episode-header">📺 Episode 4 — "Flirting with Disaster"</div>
+    <div class="episode-content">
+      <div class="event-item"><span class="event-icon">🏆</span><span>Challenge: "Feeling Famous" — 3 blindfolded teams of 3 felt their way through 12 giant statues to identify clues</span></div>
+      <div class="event-item"><span class="event-icon">🗿</span><span>Statue clues included: eagle (Hugo thought = his), butterfly (Hugo thought = JR's), flamingo (Hugo thought = Chris's), Swiss cheese (Cole privately noted = his), sheep, Greek statue, horns, shrimp, dragon, and more</span></div>
+      <div class="event-item"><span class="event-icon">🤝</span><span>Gabriel and Chris formed a surprise alliance</span></div>
+      <div class="event-item"><span class="event-icon">♟️</span><span>Shayne + Monay + JR strategized to push the Jeff Gordon = Karsyn read on Cole and Hugo to protect Shayne</span></div>
+      <div class="event-item"><span class="event-icon">🔍</span><span>JR decoded Karsyn's clue as Jeff Gordon and spread that interpretation</span></div>
+      <div class="event-item"><span class="event-icon">😱</span><span><strong>Cole</strong> — Guesser — blindsided everyone by targeting his closest ally <strong>Shayne</strong> instead of Karsyn. Correctly guessed Eddie Murphy as her dad.</span></div>
+      <div class="event-item"><span class="event-icon">🎬</span><span>Eddie Murphy made a cameo appearance on elimination</span></div>
+      <div class="event-item"><span class="event-icon">🚪</span><span><strong>Shayne</strong> eliminated — Eddie Murphy's daughter (Shayne Audra Murphy) confirmed</span></div>
+      <div class="event-item"><span class="event-icon">🔥</span><span>Monay swore revenge on Cole. Cole now has a massive target on his back.</span></div>
     </div>
   </div>
 
@@ -400,42 +425,42 @@
 <div id="tab-notes" class="tab-panel">
   <div class="notes-area">
     <div style="color: var(--muted); font-size: 0.8rem; font-style: italic; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 14px;">
-      📝 Working theories — updated each episode.
+      📝 Nicole &amp; Lou's working theories — updated each episode.
     </div>
 
     <div class="theory-block">
-      <div class="theory-player">Hugo 🚨</div>
-      <div class="theory-text">Nobel Prize + Grandfather + "most powerful man in the world." Jane already suspected Jimmy Carter but thought Hugo seemed too young. <em>Nobel Peace Prize winner, former US President, born 1924 — Carter fits perfectly.</em> Sharpest guesser in the house too.</div>
-    </div>
-
-    <div class="theory-block">
-      <div class="theory-player">Shayne 🔥</div>
-      <div class="theory-text">Relative born 1961, MJ connection to Neverland Ranch, "Buckwheat" SNL + Coming to America clues. Cole has privately confirmed it's Eddie Murphy. <em>She's a huge target — won immunity this week but can't win every week.</em></div>
-    </div>
-
-    <div class="theory-block">
-      <div class="theory-player">JR ❓</div>
-      <div class="theory-text">Brother + born in small-town Georgia. NBA ring was the lie — so he's NOT related to a basketball player. "Musician" is still unconfirmed. <em>Georgia + musician brother with NAACP-level accolades... interesting pool.</em></div>
+      <div class="theory-player">Shayne ✅ SOLVED</div>
+      <div class="theory-text"><span class="correct">Nicole called it — Eddie Murphy's daughter. Confirmed Ep. 4.</span></div>
     </div>
 
     <div class="theory-block">
       <div class="theory-player">Chris 👀</div>
-      <div class="theory-text">NOT Elvis Presley's relative (Jane guessed wrong). The "puppy love" and "Russian" clues from Ep. 3 had him visibly nervous. <em>Donny Osmond had a famous song called "Puppy Love" — strong lead.</em></div>
-    </div>
-
-    <div class="theory-block">
-      <div class="theory-player">Gabriel</div>
-      <div class="theory-text">Brother + NAACP Award + San Diego born. Not an athlete. Has now won the Guesser spot twice correctly. <em>Dangerous player — best to not be on his radar.</em></div>
-    </div>
-
-    <div class="theory-block">
-      <div class="theory-player">Monay</div>
-      <div class="theory-text">Father + Emmy winner. Has Chris's Wine Room clue. <em>Accumulating intel fast and playing both sides.</em></div>
+      <div class="theory-text">Nicole's theory: <em>Donny Osmond.</em> "Puppy Love" clue, flamingo statue, Hollywood Walk of Fame star — <em>Donny Osmond has a Walk of Fame star and his 1972 hit was literally called "Puppy Love." Strong lead.</em></div>
     </div>
 
     <div class="theory-block">
       <div class="theory-player">Karsyn</div>
-      <div class="theory-text">Uncle + Musician + Hall of Fame. Now has Shayne's Wine Room clue (decoding unclear: trophy, record players, beer...). <em>Sharp decoder — cracked Jane's Dolly clues impressively fast.</em></div>
+      <div class="theory-text">Nicole's theory: <em>Jeff Gordon.</em> JR decoded her Wine Room clue that way and the house believes it. Uncle + Hall of Fame + NASCAR connection fits. <em>Worth watching.</em></div>
+    </div>
+
+    <div class="theory-block">
+      <div class="theory-player">Hugo 🚨</div>
+      <div class="theory-text">Nobel Prize + Grandfather + "most powerful man in the world." Jane suspected Jimmy Carter. Eagle statue = presidential symbol? <em>Jimmy Carter won the Nobel Peace Prize in 2002 and was the 39th President. Fits perfectly.</em></div>
+    </div>
+
+    <div class="theory-block">
+      <div class="theory-player">Cole 🎯</div>
+      <div class="theory-text">Snowboarding family, Swiss cheese statue = Swizz Beatz connection, diary + piano clues on wall. Monay and Shayne had already figured out <em>Alicia Keys as his sister</em> before elimination. Cole is now the #1 target.</div>
+    </div>
+
+    <div class="theory-block">
+      <div class="theory-player">JR</div>
+      <div class="theory-text">Brother + small-town Georgia + NOT NBA. Musician unconfirmed. <em>Georgia music world with NAACP-level recognition... still working on it.</em></div>
+    </div>
+
+    <div class="theory-block">
+      <div class="theory-player">Monay</div>
+      <div class="theory-text">Father + Emmy winner. Has Chris's Wine Room clue. On the warpath after Shayne's elimination. <em>Dangerous player with intel and a vendetta.</em></div>
     </div>
 
     <p style="color: var(--muted); font-size: 0.75rem; font-style: italic; margin-top: 20px;">— Share your theories after each episode and I'll add them! —</p>
